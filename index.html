@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Babai!</title>
+    <style>
+        h1 {
+            font-size: 50px;
+        }
+
+        body {
+            background-color: black;
+            color: red;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #angle {
+            background-color: aqua;
+            color: red;
+            font-size: 15px;
+            padding: 10px;
+        }
+
+        button {
+            background-color: aqua;
+            color: red;
+            margin: 5px;
+            font-weight: bold;
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 10px;
+            border-style: outset;
+            border-width: 3px;
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Happy 36th Birthday Babai!!!</h1>
+    Select Colour: <input type="color" id="col" value="#ff0000"><br>
+    Select Starting Angle: <input type="number" id="angle" min="1" max="89" value="15"><br>
+    <button onclick="start()">Start / Set Colour</button><button onclick="stop()">Stop</button><button
+        onclick="reset()">Reset</button><br>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        function setup() {
+            createCanvas(500, 500)
+            background(0)
+            noStroke()
+        }
+        let moving = false;
+        let isReset = true;
+        let ballCol = "red"
+        let ballAngle = 45
+        let ballPos = [10, 10]
+        function draw() {
+            if (moving) {
+                fill(ballCol)
+                ellipse(ballPos[0], ballPos[1], 20, 20)
+                ballPos[0] += Math.cos(ballAngle) * 5
+                ballPos[1] += Math.sin(ballAngle) * 5
+                let oldPos = [...ballPos]
+                ballPos[0] = Math.min(490, Math.max(10, ballPos[0]))
+                if (oldPos[0] != ballPos[0]) {
+                    if (ballAngle < Math.PI) {
+                        ballAngle = (Math.PI / 2 - ballAngle) + Math.PI / 2;
+                    } else if (ballAngle > Math.PI) {
+                        ballAngle = (Math.PI / 2 * 3 - ballAngle) + Math.PI / 2 * 3;
+                    }
+                }
+                ballPos[1] = Math.min(491, Math.max(11, ballPos[1]))
+                if (oldPos[1] != ballPos[1]) {
+                    if (ballAngle < Math.PI / 2 * 3 && ballAngle > Math.PI / 2) {
+                        ballAngle = (Math.PI - ballAngle) + Math.PI;
+                    } else {
+                        ballAngle = -ballAngle;
+                    }
+                }
+                if (ballAngle > Math.PI * 2) {
+                    ballAngle -= Math.PI * 2
+                }
+                if (ballAngle < 0) {
+                    ballAngle += Math.PI * 2
+                }
+            }
+        }
+        function start() {
+            moving = true;
+            ballCol = $("#col").val()
+            if (isReset === true) {
+                ballAngle = ($("#angle").val() / 180) * Math.PI
+                isReset = false;
+            }
+        }
+        function stop() {
+            moving = false;
+        }
+        function reset() {
+            moving = false;
+            isReset = true;
+            ballPos = [10, 10];
+            background(0)
+        }
+    </script>
+</body>
+
+</html>
